@@ -133,16 +133,14 @@ let
 
     depsBuildBuild = prev.depsBuildBuild ++ [ libuuid ];
 
-    patches =
-      # Remove this one patch (CryptoPkg/OpensslLib: Upgrade OpenSSL to 1.1.1t)
-      # present on nixos-23.05, as it will be added in the opensslPatches below
-      (builtins.filter (patch: patch.url != "https://bugzilla.tianocore.org/attachment.cgi?id=1330") prev.patches)
-      ++ opensslPatches;
+    patches = opensslPatches;
+
     postUnpack = ''
       # This has been taken from:
       # https://github.com/NixOS/nixpkgs/commit/3ed8d9b547c3941d74d9455fdec120f415ebaacd
       rm -rf source/CryptoPkg/Library/OpensslLib/openssl
     '';
+
     postPatch = ''
       # This has been taken from:
       # https://github.com/NixOS/nixpkgs/commit/3ed8d9b547c3941d74d9455fdec120f415ebaacd
@@ -223,12 +221,12 @@ let
         (fetchurl {
           # Patch format does not play well with fetchpatch, it should be fine this is a static attachment in a ticket
           name = "CVE-2023-45229_CVE-2023-45230_CVE-2023-45231_CVE-2023-45232_CVE-2023-45233_CVE-2023-45234_CVE-2023-45235.patch";
-          url = "https://bugzilla.tianocore.org/attachment.cgi?id=1457";
+          url = "https://raw.githubusercontent.com/tianocore/user-attachments/147607ddbc1751a297d15e1293cecf4c08037366/tianocore/edk2/BZ-1457-TCBZ4534_to_TCBZ4540.patch";
           hash = "sha256-CF41lbjnXbq/6DxMW6q1qcLJ8WAs+U0Rjci+jRwJYYY=";
         })
         (fetchpatch {
           name = "CVE-2022-36764.patch";
-          url = "https://bugzilla.tianocore.org/attachment.cgi?id=1436";
+          url = "https://raw.githubusercontent.com/tianocore/user-attachments/147607ddbc1751a297d15e1293cecf4c08037366/tianocore/edk2/BZ-1436-4118.patch";
           hash = "sha256-czku8DgElisDv6minI67nNt6BS+vH6txslZdqiGaQR4=";
           excludes = [
             "SecurityPkg/Test/SecurityPkgHostTest.dsc"
